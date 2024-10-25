@@ -44,6 +44,8 @@ Pod::Spec.new do |s|
     :script => "
       set -e
 
+      . \"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"
+
       # This script borrows from the standard resource copy script https://gist.github.com/vonovak/d8f1a37804438f05bae22be1e8cd53c1
       # We need two key bits of information
       # Project Root - Where the package.json for the RN app lives
@@ -65,7 +67,8 @@ Pod::Spec.new do |s|
       # Items we need to copy for rsync
       RESOURCES_TO_COPY=${PODS_ROOT}/resources-to-copy-${TARGETNAME}.txt
 
-      node \"${PODS_TARGET_SRCROOT}/lib/commonjs/scripts/getFonts.js\" \"$PROJECT_ROOT\"/package.json > \"$RESOURCES_TO_COPY\"
+      echo \"using node found at $NODE_BINARY\"
+      \"${NODE_BINARY}\" \"${PODS_TARGET_SRCROOT}/lib/commonjs/scripts/getFonts.js\" \"$PROJECT_ROOT\"/package.json > \"$RESOURCES_TO_COPY\"
 
       #############
       # Find the destination we copy to
